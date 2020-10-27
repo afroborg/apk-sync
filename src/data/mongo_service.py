@@ -10,6 +10,8 @@ def insert_documents(data: list) -> None:
 
     alcohols = list(map(lambda x: Alcohol(x), data))
 
+    alcohols.sort(key=Alcohol.apk)
+
     Alcohol.objects.delete()
 
     for alcohol in alcohols:
