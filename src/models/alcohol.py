@@ -21,11 +21,11 @@ class Alcohol(mongoengine.Document):
 
     def __init__(self, systembolaget_data, *args, **kwargs):
         super(mongoengine.Document, self).__init__(*args, **kwargs)
-        self.productId = systembolaget_data['productId'].strip()
-        self.productNumber = systembolaget_data['productNumber'].strip()
+        self.productId = systembolaget_data['productId']
+        self.productNumber = systembolaget_data['productNumber']
         self.productName = self._generate_name(
-            systembolaget_data['productNameBold'], systembolaget_data['productNameThin']).strip()
-        self.brand = systembolaget_data['producerName'].strip()
+            systembolaget_data['productNameBold'], systembolaget_data['productNameThin'])
+        self.brand = systembolaget_data['producerName']
         self.categories = list([
             systembolaget_data['categoryLevel1'],
             systembolaget_data['categoryLevel2'],
@@ -33,7 +33,7 @@ class Alcohol(mongoengine.Document):
             systembolaget_data['categoryLevel4'],
 
         ])
-        self.image = systembolaget_data['images'][0]['imageUrl'].strip()
+        self.image = self._get_image(systembolaget_data['images'])
         self.available = not systembolaget_data['isDiscontinued']
         self.percentage = systembolaget_data['alcoholPercentage']
         self.volume = systembolaget_data['volume']
@@ -43,6 +43,12 @@ class Alcohol(mongoengine.Document):
 
     def _generate_name(self, bold: str, thin: str) -> str:
         return bold + ' ' + thin if thin else bold
+
+    def _get_image(self, images: list) -> str:
+        if(images != None and len(images) > 0):
+            return str(images[0]['imageUrl']) + '_400.png'
+
+        return None
 
     # This is where the magic happens :)
     def _calculate_apk(self) -> float:
