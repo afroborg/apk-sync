@@ -41,8 +41,8 @@ def fetch_alcohols():
                 print('Request failed with error {}: {}'.format(
                     r.status_code, r.json()))
                 page = -1
-        except:
-            print('Request failed')
+        except Exception as e:
+            print('Request failed: {}'.format(e))
             page = -1
 
     mongo_service.insert_documents(alcohols)

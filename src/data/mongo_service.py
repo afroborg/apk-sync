@@ -1,6 +1,5 @@
 from datetime import datetime
 
-import mongoengine
 from models.alcohol import Alcohol
 from models.metadata import Metadata
 
@@ -10,7 +9,7 @@ def insert_documents(data: list) -> None:
 
     alcohols = list(map(lambda x: Alcohol(x), data))
 
-    alcohols.sort(key=Alcohol.apk)
+    alcohols.sort(key=lambda x: x.apk, reverse=True)
 
     Alcohol.objects.delete()
 
@@ -20,10 +19,15 @@ def insert_documents(data: list) -> None:
     # Update metadata
     meta: Metadata = Metadata.objects.first()
 
-    if meta:
-        meta.last_synced = datetime.now()
-        meta.save()
-    else:
-        Metadata().save()
+    try:
 
-    print('All {} documents inserted'.format(len(alcohols)))
+        if meta:
+            meta.last_synced = datetime.now()
+            meta.save()
+        else:
+            Metadata().save()
+
+        print('All {} documents inserted'.format(len(alcohols)))
+
+    except:
+        print('Coult not save data to MongoDB')

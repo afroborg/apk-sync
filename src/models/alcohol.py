@@ -1,3 +1,5 @@
+from datetime import datetime
+
 import mongoengine
 
 
@@ -5,7 +7,9 @@ class Alcohol(mongoengine.Document):
     productId: str = mongoengine.StringField(required=True)
     productNumber: str = mongoengine.StringField(required=True)
     productName: str = mongoengine.StringField(required=True)
+    systembolaget_link: str = mongoengine.StringField()
     brand: str = mongoengine.StringField()
+    packaging = mongoengine.StringField()
     categories: list = mongoengine.ListField()
     image: str = mongoengine.StringField()
     available: bool = mongoengine.BooleanField(default=True)
@@ -13,6 +17,7 @@ class Alcohol(mongoengine.Document):
     volume: float = mongoengine.FloatField(min_value=0)
     price: float = mongoengine.FloatField(min_value=0)
     apk: float = mongoengine.FloatField(min_value=0)
+    last_updated = mongoengine.DateTimeField(default=datetime.now())
 
     meta = {
         'db_alias': 'APK',
@@ -26,6 +31,8 @@ class Alcohol(mongoengine.Document):
         self.productName = self._generate_name(
             systembolaget_data['productNameBold'], systembolaget_data['productNameThin'])
         self.brand = systembolaget_data['producerName']
+        self.packaging = systembolaget_data['bottleTextShort']
+        self.systembolaget_link = 'https://www.systembolaget.se/' + self.productNumber
         self.categories = list([
             systembolaget_data['categoryLevel1'],
             systembolaget_data['categoryLevel2'],
