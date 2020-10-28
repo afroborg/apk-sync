@@ -8,9 +8,9 @@ autopep8 = "*"
 
 [packages]
 requests = "*"
-pyodbc = "*"
 pymongo = "*"
 mongoengine = "*"
+python-dotenv = "*"
 
 [requires]
 python_version = "3.9"
