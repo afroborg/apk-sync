@@ -17,7 +17,7 @@ class Alcohol(mongoengine.Document):
     volume: float = mongoengine.FloatField(min_value=0)
     price: float = mongoengine.FloatField(min_value=0)
     apk: float = mongoengine.FloatField(min_value=0)
-    last_updated = mongoengine.DateTimeField(default=datetime.now())
+    last_updated = mongoengine.DateTimeField(default=datetime.now)
 
     meta = {
         'db_alias': 'APK',
