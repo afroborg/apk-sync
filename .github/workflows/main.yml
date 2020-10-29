@@ -11,6 +11,6 @@ jobs:
       with:
         host: ${{ secrets.REMOTE_HOST }}
         username: ${{ secrets.USER }}
-        key: ${{secrets.SSH}}
+        key: ${{ secrets.SSH }}
         source: "."
         target: "~/dev/apk"
