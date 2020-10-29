@@ -1,0 +1,20 @@
+name: Copy to DO
+
+on:
+  push:
+    branches: 
+      - master
+
+jobs:
+  copy:
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+    # Runs a single command using the runners shell
+    - name: Copy files
+      shell: bash
+      env:
+        USER: ${{secrets.USER}}
+        HOST: ${{secrets.REMOTE_HOST}}
+      run: scp -r ./* $USER@$HOST:~/dev/apk/apk-updater/
